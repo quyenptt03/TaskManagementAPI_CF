@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using TaskManagement.Interfaces;
 using TaskManagement.Models;
 
@@ -27,6 +30,7 @@ namespace TaskManagement.Controllers
             return Ok(_taskLabelRepository.GetAll());
         }
 
+        [Authorize]
         [HttpPost("assign")]
         public ActionResult AssignTaskLabel([FromBody] TaskLabel taskLabel)
         {
@@ -52,6 +56,13 @@ namespace TaskManagement.Controllers
             {
                 return Conflict("Label is already assigned to this task.");
             }
+
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            if (userId != task.UserId)
+            {
+                return Forbid();
+            }
+
             try
             {
                 _taskLabelRepository.Add(taskLabel);
@@ -63,6 +74,7 @@ namespace TaskManagement.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("remove/{taskId}/{labelId}")]
         public ActionResult RemoveLabel(int taskId, int labelId)
         {
@@ -72,6 +84,14 @@ namespace TaskManagement.Controllers
             if (taskLabel == null)
             {
                 return NotFound("Task label not found.");
+            }
+
+            var task = _taskRepository.GetById(taskId);
+
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            if (userId != task.UserId)
+            {
+                return Forbid();
             }
 
             try

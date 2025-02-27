@@ -4,7 +4,6 @@ using TaskManagement.Interfaces;
 using TaskManagement.Models;
 using TaskManagement.Services;
 using TaskManagement.DTOs;
-using System.Security.Claims;
 
 namespace TaskManagement.Controllers
 {
@@ -96,7 +95,6 @@ namespace TaskManagement.Controllers
             return Ok(new { message = "Logged out successfully" });
         }
 
-        [Authorize]
         [HttpGet]
         public ActionResult GetUsers()
         {
