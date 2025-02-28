@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TaskManagement.Models;
 using Task = TaskManagement.Models.Task;
 
 namespace TaskManagement.DataAccess
 {
-    public class TaskManagementContext:DbContext
+    public class TaskManagementContext: IdentityDbContext<User, IdentityRole<int>, int>
     {
         public TaskManagementContext()
         {
@@ -24,18 +26,21 @@ namespace TaskManagement.DataAccess
 
         public DbSet<TaskComment> TaskComments { get; set; }
 
-        public DbSet<User> Users { get; set; }
+        public new DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Category>()
                 .HasMany(c => c.Tasks)
                 .WithOne(t => t.Category)
                 .HasForeignKey(t => t.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.Username).IsUnique();
+            //modelBuilder.Entity<User>()
+            //    .HasIndex(u => u.Username).IsUnique();
 
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email).IsUnique();
@@ -96,13 +101,26 @@ namespace TaskManagement.DataAccess
             {
                 entity.HasKey(e => e.Id);
 
-                entity.HasIndex(e => e.Username).IsUnique();
+                //entity.HasIndex(e => e.Username).IsUnique();
 
                 entity.HasIndex(e => e.Email).IsUnique();
 
             });
 
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<IdentityRole<int>>().HasData(
+                new IdentityRole<int>
+                {
+                    Id = 1,
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole<int>
+                {
+                    Id = 2,
+                    Name = "User",
+                    NormalizedName = "USER"
+                });
+
         }
     }
 }

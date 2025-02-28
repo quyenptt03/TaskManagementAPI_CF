@@ -14,13 +14,15 @@ namespace TaskManagement.Services
             _configuration = configuration;
         }
 
-        public string CreateToken(User user)
+        public string CreateToken(User user, IList<string> roles)
         {
             var claims = new List<Claim> {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
+                //new Claim(ClaimTypes.Name, user.Username),
                 new Claim("Email", user.Email)
             };
+
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["ApplicationSettings:JWT_Secret"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

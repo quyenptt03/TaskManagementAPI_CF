@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TaskManagement.DTOs;
 using TaskManagement.Interfaces;
 using TaskManagement.Models;
 
@@ -10,29 +12,35 @@ namespace TaskManagement.Controllers
     public class CategoryController : Controller
     {
         private readonly IGenericRepository<Category> _repository;
+        private readonly IMapper _mapper;
 
-        public CategoryController(IGenericRepository<Category> repository)
+        public CategoryController(IGenericRepository<Category> repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public ActionResult GetCategories()
+        public ActionResult<IEnumerable<CategoryDto>> GetCategories()
         {
             List<Category> result = (List<Category>)_repository.GetAll();
+
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public ActionResult Get([FromRoute] int id)
+        public ActionResult<IEnumerable<CategoryDto>> Get([FromRoute] int id)
         {
             Category cat = _repository.GetById(id);
             return cat == null ? NotFound("Category not found") : Ok(cat);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public ActionResult AddCategory([FromBody] Category category)
+        public ActionResult<IEnumerable<CategoryDto>> AddCategory([FromBody] CategoryDto categoryDto)
         {
+            var category = _mapper.Map<Category>(categoryDto);
+
             if (category == null)
             {
                 return BadRequest("Category is required");
@@ -59,14 +67,18 @@ namespace TaskManagement.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public ActionResult UpdateCategory(int id, [FromBody] Category category)
+        public ActionResult<IEnumerable<CategoryDto>> UpdateCategory(int id, [FromBody] CategoryDto categoryDto)
         {
             var cat = _repository.GetById(id);
             if (cat == null)
             {
                 return NotFound("Category Not Found!!!!!!");
             }
+
+            var category = _mapper.Map<Category>(categoryDto);
+
             try
             {
                 if (_repository.Any(c => c.Id != id && c.Name == category.Name))
@@ -84,8 +96,9 @@ namespace TaskManagement.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        public ActionResult DeleteCategory([FromRoute] int id)
+        public ActionResult<IEnumerable<CategoryDto>> DeleteCategory([FromRoute] int id)
         {
             var category = _repository.GetById(id);
             if (category == null)

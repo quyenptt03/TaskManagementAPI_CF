@@ -4,6 +4,8 @@ using TaskManagement.Interfaces;
 using TaskManagement.Models;
 using TaskManagement.Services;
 using TaskManagement.DTOs;
+using Microsoft.AspNetCore.Identity;
+using Azure.Core;
 
 namespace TaskManagement.Controllers
 {
@@ -14,49 +16,50 @@ namespace TaskManagement.Controllers
         private readonly IGenericRepository<User> _repository;
         private readonly IConfiguration _configuration;
         private readonly AuthService _authHelper;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public UserController(IGenericRepository<User> repository, IConfiguration configuration, AuthService authHelper)
+        public UserController(IGenericRepository<User> repository,
+           IConfiguration configuration,
+           AuthService authHelper,
+           UserManager<User> userManager,
+           SignInManager<User> signinManager)
         {
             _repository = repository;
             _configuration = configuration;
             _authHelper = authHelper;
+            _userManager = userManager;
+            _signInManager = signinManager;
+            //_roleManager = roleManager;
         }
 
         [HttpPost("register")]
-        public ActionResult Register([FromBody] UserDto registerUser)
+        public async Task<IActionResult> Register([FromBody] UserDto registerUser)
         {
-            if (registerUser.Username == null || registerUser.Email == null || registerUser.Password == null)
+            if (registerUser.Email == null || registerUser.Password == null)
             {
-                return BadRequest("Username, email and password are required.");
-            }
-            if (_repository.Any(u => u.Username == registerUser.Username))
-            {
-                return Conflict("Username already exists");
-            }
-            if (_repository.Any(u => u.Email == registerUser.Email))
-            {
-                return Conflict("Email already exists");
-            }
-            try
-            {
-                User user = new User
-                {
-                    Username = registerUser.Username,
-                    Email = registerUser.Email,
-                    PasswordHash = SecurePassword.Hash(registerUser.Password)
-                };
-                _repository.Add(user);
-                return Ok(user);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
+                return BadRequest("Email and password are required.");
             }
 
+            bool isFirstUser = !_userManager.Users.Any();
+            var user = new User { UserName = registerUser.Email, Email = registerUser.Email };
+            var result = await _userManager.CreateAsync(user, registerUser.Password);
+
+            string role = isFirstUser ? "Admin" : "User";
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "User");
+
+                return Ok(new { data = new { UserName = user.UserName, Email = user.Email, Role = role },
+                    message = "User registered successfully" });
+            }
+
+            return BadRequest("Registration failed");
         }
 
         [HttpPost("login")]
-        public ActionResult Login([FromBody] UserDto loginUser)
+        public async Task<IActionResult> Login([FromBody] UserDto loginUser)
         {
             if (loginUser.Email == null || loginUser.Password == null)
             {
@@ -67,14 +70,15 @@ namespace TaskManagement.Controllers
             {
                 return Unauthorized("Invalid email or password");
             }
-            bool isValid = SecurePassword.Verify(loginUser.Password, user.PasswordHash);
-            if (!isValid)
-            {
-                return Unauthorized("Invalid username or password.");
-            }
 
-            string accessToken = _authHelper.CreateToken(user);
-            Response.Cookies.Append("token", accessToken, new CookieOptions
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginUser.Password, false);
+            if (!result.Succeeded)
+                return Unauthorized();
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var token = _authHelper.CreateToken(user, roles);
+            Response.Cookies.Append("token", token, new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
@@ -83,8 +87,7 @@ namespace TaskManagement.Controllers
                 //Expires = DateTime.UtcNow.AddMinutes(1)
             });
 
-            //return Ok(new { token = accessToken });
-            return Ok(new { message = "Login successfully" });
+            return Ok("Login successfully");
         }
 
         [Authorize]

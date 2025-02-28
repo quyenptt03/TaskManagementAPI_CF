@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Threading.Tasks;
+using TaskManagement.DTOs;
 using TaskManagement.Interfaces;
+using TaskManagement.Models;
+using TaskManagement.Repositories;
 using Task = TaskManagement.Models.Task;
 
 namespace TaskManagement.Controllers
@@ -12,21 +17,25 @@ namespace TaskManagement.Controllers
     public class TaskController : Controller
     {
         private readonly IGenericRepository<Task> _repository;
+        private readonly IGenericRepository<Category> _catRepository;
+        private readonly IMapper _mapper;
 
-        public TaskController(IGenericRepository<Task> repository)
+        public TaskController(IGenericRepository<Task> repository, IMapper mapper, IGenericRepository<Category> catRepository)
         {
             _repository = repository;
+            _mapper = mapper;
+            _catRepository = catRepository;
         }
 
         [HttpGet]
-        public ActionResult GetTasks()
+        public ActionResult<IEnumerable<TaskDto>> GetTasks()
         {
             var result = _repository.GetAll();
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public ActionResult GetTaskById([FromRoute] int id)
+        public ActionResult<IEnumerable<TaskDto>> GetTaskById([FromRoute] int id)
         {
             var task = _repository.GetById(id);
             return task == null ? NotFound("Task not found") : Ok(task);
@@ -34,35 +43,42 @@ namespace TaskManagement.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult AddTask([FromBody] Task task)
+        public ActionResult<IEnumerable<TaskDto>> AddTask([FromBody] TaskDto taskDto)
         {
+            var task = _mapper.Map<Task>(taskDto);
+
             if (task == null)
             {
                 return BadRequest("Task cannot be null");
             }
-            else if (string.IsNullOrWhiteSpace(task.Title))
+            if (string.IsNullOrWhiteSpace(task.Title))
             {
                 return BadRequest("Task must have a title.");
             }
-            else
+
+            var cat = _catRepository.GetById(task.CategoryId);
+            if (cat == null)
             {
-                try
-                {
-                    var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-                    task.UserId = userId;
-                    _repository.Add(task);
-                    return Ok(task);
-                }
-                catch (Exception e)
-                {
-                    return BadRequest(e);
-                }
+                return NotFound("Category not found!");
+            }
+
+            try
+            {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                task.UserId = userId;
+                _repository.Add(task);
+                return Ok(task);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+                
             }
         }
 
         [Authorize]
         [HttpPut("{id}")]
-        public ActionResult UpdateTask(int id, [FromBody] Task task)
+        public ActionResult<IEnumerable<TaskDto>> UpdateTask(int id, [FromBody] TaskDto taskDto)
         {
             var taskExist = _repository.GetById(id);
             if (taskExist == null)
@@ -70,31 +86,39 @@ namespace TaskManagement.Controllers
                 return NotFound("Task Not Found!!!!!!");
             }
 
+            var cat = _catRepository.GetById(taskDto.CategoryId);
+            if (cat == null)
+            {
+                return NotFound("Category not found!");
+            }
+
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            if (userId != task.UserId)
+            if (userId != taskExist.UserId)
             {
                 return Forbid();
             }
 
+            _mapper.Map(taskDto, taskExist);
+
             try
             {
-                taskExist.Title = task.Title;
-                taskExist.Description = task.Description;
-                taskExist.CategoryId = task.CategoryId;
-                taskExist.IsCompleted = task.IsCompleted;
+                taskExist.Title = taskDto.Title;
+                taskExist.Description = taskDto.Description;
+                taskExist.CategoryId = taskDto.CategoryId;
+                taskExist.IsCompleted = taskDto.IsCompleted;
 
                 _repository.Update(taskExist);
                 return Ok(taskExist);
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(new { error = e.Message });
             }
         }
 
         [Authorize]
         [HttpDelete("{id}")]
-        public ActionResult DeleteTask([FromRoute] int id)
+        public ActionResult<IEnumerable<TaskDto>> DeleteTask([FromRoute] int id)
         {
             var task = _repository.GetById(id);
             if (task == null)

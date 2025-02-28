@@ -1,18 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace TaskManagement.Models
 {
-    public class User
+    public class User : IdentityUser<int>
     {
-        [Key]
-        public int Id { get; set; }
+        //[Key]
+        //public int Id { get; set; }
                 
-        public string Username { get; set; } = null!;
+        //public string Username { get; set; } = null!;
 
-        public string Email { get; set; } = null!;
+        //public string Email { get; set; } = null!;
 
-        public string PasswordHash { get; set; } = null!;
+        //public string PasswordHash { get; set; } = null!;
 
         [JsonIgnore]
         public virtual ICollection<TaskComment> TaskComments { get; set; } = new List<TaskComment>();

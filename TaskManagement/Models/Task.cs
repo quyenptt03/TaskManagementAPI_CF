@@ -14,20 +14,20 @@ namespace TaskManagement.Models
 
         public bool IsCompleted { get; set; } = false;
 
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
 
-        public int? CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [JsonIgnore]
-        public virtual Category? Category { get; set; }
+        public virtual Category Category { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<TaskComment> TaskComments { get; set; } = new List<TaskComment>();
 
         [JsonIgnore]
-        public virtual User? User { get; set; }
+        public virtual User User { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<TaskLabel> TaskLabels { get; set; } = new List<TaskLabel>();
