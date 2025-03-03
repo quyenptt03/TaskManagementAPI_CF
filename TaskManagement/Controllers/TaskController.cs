@@ -106,7 +106,7 @@ namespace TaskManagement.Controllers
                 taskExist.Description = taskDto.Description;
                 taskExist.CategoryId = taskDto.CategoryId;
                 taskExist.IsCompleted = taskDto.IsCompleted;
-
+                taskExist.UserId = userId;
                 _repository.Update(taskExist);
                 return Ok(taskExist);
             }

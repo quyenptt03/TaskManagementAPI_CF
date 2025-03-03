@@ -15,13 +15,6 @@ namespace TaskManagement.Mappers
             CreateMap<Label, LabelDto>().ReverseMap();
             CreateMap<TaskLabel, TaskLabelDto>().ReverseMap();
 
-            //CreateMap<TaskDto, Models.Task>();
-            //CreateMap<UserDto, User>();
-            //CreateMap<CategoryDto, Category>();
-            //CreateMap<TaskCommentDto, TaskComment>();
-            //CreateMap<LabelDto, Label>();
-            //CreateMap<TaskLabelDto, TaskLabel>();
-
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using TaskManagement.DTOs;
 using TaskManagement.Interfaces;
 using TaskManagement.Models;
 
@@ -9,14 +11,16 @@ namespace TaskManagement.Controllers
     public class LabelController : Controller
     {
         private readonly IGenericRepository<Label> _labelRepository;
+        private readonly IMapper _mapper;
 
-        public LabelController(IGenericRepository<Label> labelRepository)
+        public LabelController(IGenericRepository<Label> labelRepository, IMapper mapper)
         {
             _labelRepository = labelRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public ActionResult GetLabels()
+        public ActionResult<IEnumerable<LabelDto>> GetLabels()
         {
             try
             {
@@ -30,7 +34,7 @@ namespace TaskManagement.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult GetLabelById([FromRoute] int id)
+        public ActionResult<IEnumerable<LabelDto>> GetLabelById([FromRoute] int id)
         {
             try
             {
@@ -44,8 +48,10 @@ namespace TaskManagement.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddLabel([FromBody] Label label)
+        public ActionResult<IEnumerable<LabelDto>> AddLabel([FromBody] LabelDto labelDto)
         {
+            var label = _mapper.Map<Label>(labelDto);
+
             if (label == null)
             {
                 return BadRequest("Label cannot be null");
@@ -69,13 +75,15 @@ namespace TaskManagement.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateLabel([FromRoute] int id, [FromBody] Label label)
+        public ActionResult UpdateLabel([FromRoute] int id, [FromBody] LabelDto labelDto)
         {
             var labelExists = _labelRepository.GetById(id);
             if (labelExists == null)
             {
                 return NotFound("Label Not Found!!!!!!");
             }
+
+            var label = _mapper.Map<Label>(labelDto);
 
             try
             {
@@ -94,7 +102,7 @@ namespace TaskManagement.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteLabel([FromRoute] int id)
+        public ActionResult<IEnumerable<LabelDto>> DeleteLabel([FromRoute] int id)
         {
             var label = _labelRepository.GetById(id);
             if (label == null)

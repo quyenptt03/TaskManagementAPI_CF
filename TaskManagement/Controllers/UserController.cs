@@ -6,6 +6,7 @@ using TaskManagement.Services;
 using TaskManagement.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Azure.Core;
+using AutoMapper;
 
 namespace TaskManagement.Controllers
 {
@@ -18,31 +19,36 @@ namespace TaskManagement.Controllers
         private readonly AuthService _authHelper;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IMapper _mapper;
 
         public UserController(IGenericRepository<User> repository,
            IConfiguration configuration,
            AuthService authHelper,
            UserManager<User> userManager,
-           SignInManager<User> signinManager)
+           SignInManager<User> signinManager,
+            IMapper mapper
+            )
         {
             _repository = repository;
             _configuration = configuration;
             _authHelper = authHelper;
             _userManager = userManager;
             _signInManager = signinManager;
-            //_roleManager = roleManager;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserDto registerUser)
         {
+
             if (registerUser.Email == null || registerUser.Password == null)
             {
                 return BadRequest("Email and password are required.");
             }
+            var userData = _mapper.Map<User>(registerUser);
 
             bool isFirstUser = !_userManager.Users.Any();
-            var user = new User { UserName = registerUser.Email, Email = registerUser.Email };
+            var user = new User { UserName = userData.Email, Email = userData.Email };
             var result = await _userManager.CreateAsync(user, registerUser.Password);
 
             string role = isFirstUser ? "Admin" : "User";
@@ -65,6 +71,7 @@ namespace TaskManagement.Controllers
             {
                 return BadRequest("Email and password are required.");
             }
+
             var user = _repository.GetAll().FirstOrDefault(u => u.Email == loginUser.Email);
             if (user == null)
             {

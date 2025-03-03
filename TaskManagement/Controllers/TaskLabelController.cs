@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using TaskManagement.DTOs;
 using TaskManagement.Interfaces;
 using TaskManagement.Models;
 
@@ -14,26 +16,31 @@ namespace TaskManagement.Controllers
         private readonly IGenericRepository<Label> _labelRepository;
         private readonly IGenericRepository<Models.Task> _taskRepository;
         private readonly IGenericRepository<TaskLabel> _taskLabelRepository;
+        private readonly IMapper _mapper;
 
         public TaskLabelController(IGenericRepository<Label> labelRepository,
                                     IGenericRepository<Models.Task> taskRepository,
-                                    IGenericRepository<TaskLabel> repository)
+                                    IGenericRepository<TaskLabel> repository,
+                                    IMapper mapper)
         {
             _labelRepository = labelRepository;
             _taskRepository = taskRepository;
             _taskLabelRepository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public ActionResult GetAll()
+        public ActionResult<IEnumerable<TaskLabel>> GetAll()
         {
             return Ok(_taskLabelRepository.GetAll());
         }
 
         [Authorize]
         [HttpPost("assign")]
-        public ActionResult AssignTaskLabel([FromBody] TaskLabel taskLabel)
+        public ActionResult<IEnumerable<TaskLabel>> AssignTaskLabel([FromBody] TaskLabelDto taskLabelDto)
         {
+            var taskLabel = _mapper.Map<TaskLabel>(taskLabelDto);
+
             if (taskLabel == null)
             {
                 return BadRequest("Task label is required");
@@ -76,7 +83,7 @@ namespace TaskManagement.Controllers
 
         [Authorize]
         [HttpDelete("remove/{taskId}/{labelId}")]
-        public ActionResult RemoveLabel(int taskId, int labelId)
+        public ActionResult<IEnumerable<TaskLabel>> RemoveLabel(int taskId, int labelId)
         {
             var taskLabel = _taskLabelRepository
                 .GetAll()

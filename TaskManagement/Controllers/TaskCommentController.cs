@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TaskManagement.Interfaces;
 using TaskManagement.Models;
+using TaskManagement.DTOs;
 
 namespace TaskManagement.Controllers
 {
@@ -13,11 +15,13 @@ namespace TaskManagement.Controllers
     {
         private readonly IGenericRepository<TaskComment> _repository;
         private readonly IGenericRepository<Models.Task> _taskRepository;
+        private readonly IMapper _mapper;
 
-        public TaskCommentController(IGenericRepository<TaskComment> repository, IGenericRepository<Models.Task> taskRepository)
+        public TaskCommentController(IGenericRepository<TaskComment> repository, IGenericRepository<Models.Task> taskRepository, IMapper mapper)
         {
             _repository = repository;
             _taskRepository = taskRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -30,8 +34,10 @@ namespace TaskManagement.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult AddCommentToTask([FromBody] TaskComment comment)
+        public ActionResult AddCommentToTask([FromBody] TaskCommentDto commentDto)
         {
+            var comment = _mapper.Map<TaskComment>(commentDto);
+
             if (comment == null)
             {
                 return BadRequest("Task comment cannot be null");
