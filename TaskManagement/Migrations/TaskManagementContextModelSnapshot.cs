@@ -206,7 +206,7 @@ namespace TaskManagement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -232,6 +232,35 @@ namespace TaskManagement.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("TaskManagement.Models.TaskAttachment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TaskId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("TaskAttachment");
                 });
 
             modelBuilder.Entity("TaskManagement.Models.TaskComment", b =>
@@ -407,7 +436,8 @@ namespace TaskManagement.Migrations
                     b.HasOne("TaskManagement.Models.Category", "Category")
                         .WithMany("Tasks")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("TaskManagement.Models.User", "User")
                         .WithMany("Tasks")
@@ -417,6 +447,17 @@ namespace TaskManagement.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TaskManagement.Models.TaskAttachment", b =>
+                {
+                    b.HasOne("TaskManagement.Models.Task", "Task")
+                        .WithMany("Attachments")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("TaskManagement.Models.TaskComment", b =>
@@ -469,6 +510,8 @@ namespace TaskManagement.Migrations
 
             modelBuilder.Entity("TaskManagement.Models.Task", b =>
                 {
+                    b.Navigation("Attachments");
+
                     b.Navigation("TaskComments");
 
                     b.Navigation("TaskLabels");

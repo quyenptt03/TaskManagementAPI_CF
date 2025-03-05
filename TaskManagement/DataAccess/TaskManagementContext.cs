@@ -25,6 +25,7 @@ namespace TaskManagement.DataAccess
         public DbSet<TaskLabel> TaskLabels { get; set; }
 
         public DbSet<TaskComment> TaskComments { get; set; }
+        public DbSet<TaskAttachment> TaskAttachment { get; set; }
 
         public new DbSet<User> Users { get; set; }
 
@@ -64,11 +65,17 @@ namespace TaskManagement.DataAccess
 
                 entity.HasOne(d => d.Category).WithMany(p => p.Tasks)
                     .HasForeignKey(d => d.CategoryId)
-                    .OnDelete(DeleteBehavior.SetNull);
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(d => d.User).WithMany(p => p.Tasks)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasMany(t => t.Attachments)
+                    .WithOne(a => a.Task)
+                    .HasForeignKey(a => a.TaskId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
             });
 
             modelBuilder.Entity<TaskLabel>(entity =>
@@ -97,29 +104,29 @@ namespace TaskManagement.DataAccess
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.HasKey(e => e.Id);
+            //modelBuilder.Entity<User>(entity =>
+            //{
+            //    entity.HasKey(e => e.Id);
 
-                //entity.HasIndex(e => e.Username).IsUnique();
+            //    //entity.HasIndex(e => e.Username).IsUnique();
 
-                entity.HasIndex(e => e.Email).IsUnique();
+            //    entity.HasIndex(e => e.Email).IsUnique();
 
-            });
+            //});
 
-            modelBuilder.Entity<IdentityRole<int>>().HasData(
-                new IdentityRole<int>
-                {
-                    Id = 1,
-                    Name = "Admin",
-                    NormalizedName = "ADMIN"
-                },
-                new IdentityRole<int>
-                {
-                    Id = 2,
-                    Name = "User",
-                    NormalizedName = "USER"
-                });
+            //modelBuilder.Entity<IdentityRole<int>>().HasData(
+            //    new IdentityRole<int>
+            //    {
+            //        Id = 1,
+            //        Name = "Admin",
+            //        NormalizedName = "ADMIN"
+            //    },
+            //    new IdentityRole<int>
+            //    {
+            //        Id = 2,
+            //        Name = "User",
+            //        NormalizedName = "USER"
+            //    });
 
         }
     }

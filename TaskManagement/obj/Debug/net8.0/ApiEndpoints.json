@@ -7,7 +7,17 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.DTOs.CategoryDto, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "TaskManagement.Controllers.CategoryController",
@@ -18,12 +28,22 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "category",
-        "Type": "TaskManagement.Models.Category",
+        "Name": "categoryDto",
+        "Type": "TaskManagement.DTOs.CategoryDto",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.DTOs.CategoryDto, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "TaskManagement.Controllers.CategoryController",
@@ -39,7 +59,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.DTOs.CategoryDto, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "TaskManagement.Controllers.CategoryController",
@@ -55,12 +85,22 @@
         "IsRequired": true
       },
       {
-        "Name": "category",
-        "Type": "TaskManagement.Models.Category",
+        "Name": "categoryDto",
+        "Type": "TaskManagement.DTOs.CategoryDto",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.DTOs.CategoryDto, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "TaskManagement.Controllers.CategoryController",
@@ -76,7 +116,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.DTOs.CategoryDto, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "TaskManagement.Controllers.LabelController",
@@ -86,7 +136,17 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.DTOs.LabelDto, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "TaskManagement.Controllers.LabelController",
@@ -97,12 +157,22 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "label",
-        "Type": "TaskManagement.Models.Label",
+        "Name": "labelDto",
+        "Type": "TaskManagement.DTOs.LabelDto",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.DTOs.LabelDto, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "TaskManagement.Controllers.LabelController",
@@ -118,7 +188,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.DTOs.LabelDto, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "TaskManagement.Controllers.LabelController",
@@ -134,8 +214,8 @@
         "IsRequired": true
       },
       {
-        "Name": "label",
-        "Type": "TaskManagement.Models.Label",
+        "Name": "labelDto",
+        "Type": "TaskManagement.DTOs.LabelDto",
         "IsRequired": true
       }
     ],
@@ -153,6 +233,90 @@
         "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.DTOs.LabelDto, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TaskManagement.Controllers.TaskAttachmentController",
+    "Method": "GetAttachments",
+    "RelativePath": "api/task-attachment",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "taskId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagement.Controllers.TaskAttachmentController",
+    "Method": "DeleteAttachment",
+    "RelativePath": "api/task-attachment/{attachmentId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "attachmentId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagement.Controllers.TaskAttachmentController",
+    "Method": "UploadAttachment",
+    "RelativePath": "api/task-attachment/upload",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "taskId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TaskManagement.Controllers.TaskAttachmentController",
+    "Method": "UploadMultipleAttachments",
+    "RelativePath": "api/task-attachment/upload-multiple/{taskId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "taskId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "files",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -176,8 +340,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "comment",
-        "Type": "TaskManagement.Models.TaskComment",
+        "Name": "commentDto",
+        "Type": "TaskManagement.DTOs.TaskCommentDto",
         "IsRequired": true
       }
     ],
@@ -207,7 +371,17 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.Models.TaskLabel, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "TaskManagement.Controllers.TaskLabelController",
@@ -218,12 +392,22 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "taskLabel",
-        "Type": "TaskManagement.Models.TaskLabel",
+        "Name": "taskLabelDto",
+        "Type": "TaskManagement.DTOs.TaskLabelDto",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.Models.TaskLabel, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "TaskManagement.Controllers.TaskLabelController",
@@ -244,7 +428,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.Models.TaskLabel, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "TaskManagement.Controllers.TaskController",
@@ -254,7 +448,17 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.DTOs.TaskDto, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "TaskManagement.Controllers.TaskController",
@@ -265,12 +469,22 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "task",
-        "Type": "TaskManagement.Models.Task",
+        "Name": "taskDto",
+        "Type": "TaskManagement.DTOs.TaskDto",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.DTOs.TaskDto, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "TaskManagement.Controllers.TaskController",
@@ -286,7 +500,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.DTOs.TaskDto, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "TaskManagement.Controllers.TaskController",
@@ -302,12 +526,22 @@
         "IsRequired": true
       },
       {
-        "Name": "task",
-        "Type": "TaskManagement.Models.Task",
+        "Name": "taskDto",
+        "Type": "TaskManagement.DTOs.TaskDto",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.DTOs.TaskDto, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "TaskManagement.Controllers.TaskController",
@@ -323,7 +557,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TaskManagement.DTOs.TaskDto, TaskManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "TaskManagement.Controllers.UserController",

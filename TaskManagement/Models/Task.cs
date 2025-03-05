@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace TaskManagement.Models
@@ -14,22 +15,28 @@ namespace TaskManagement.Models
 
         public bool IsCompleted { get; set; } = false;
 
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
+        [ForeignKey("UserId")]
 
         public int CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [JsonIgnore]
-        public virtual Category Category { get; set; }
+        public virtual Category? Category { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<TaskComment> TaskComments { get; set; } = new List<TaskComment>();
+        public virtual User? User { get; set; }
 
         [JsonIgnore]
-        public virtual User User { get; set; }
+        public virtual ICollection<TaskComment>? TaskComments { get; set; } = new List<TaskComment>();
+
 
         [JsonIgnore]
-        public virtual ICollection<TaskLabel> TaskLabels { get; set; } = new List<TaskLabel>();
+        public virtual ICollection<TaskLabel>? TaskLabels { get; set; } = new List<TaskLabel>();
+
+        [JsonIgnore]
+        public virtual ICollection<TaskAttachment>? Attachments { get; set; } = new List<TaskAttachment>();
     }
 }

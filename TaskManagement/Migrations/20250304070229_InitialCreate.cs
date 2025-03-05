@@ -195,7 +195,7 @@ namespace TaskManagement.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsCompleted = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: true),
-                    CategoryId = table.Column<int>(type: "int", nullable: true),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -212,7 +212,29 @@ namespace TaskManagement.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TaskAttachment",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TaskId = table.Column<int>(type: "int", nullable: false),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UploadedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TaskAttachment", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TaskAttachment_Tasks_TaskId",
+                        column: x => x.TaskId,
+                        principalTable: "Tasks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -326,6 +348,11 @@ namespace TaskManagement.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_TaskAttachment_TaskId",
+                table: "TaskAttachment",
+                column: "TaskId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TaskComments_TaskId",
                 table: "TaskComments",
                 column: "TaskId");
@@ -368,6 +395,9 @@ namespace TaskManagement.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "TaskAttachment");
 
             migrationBuilder.DropTable(
                 name: "TaskComments");

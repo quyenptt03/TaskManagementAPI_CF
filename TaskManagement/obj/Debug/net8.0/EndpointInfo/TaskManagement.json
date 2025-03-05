@@ -12,7 +12,33 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -24,24 +50,50 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Category"
+                "$ref": "#/components/schemas/CategoryDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Category"
+                "$ref": "#/components/schemas/CategoryDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Category"
+                "$ref": "#/components/schemas/CategoryDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -64,7 +116,33 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -87,24 +165,50 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Category"
+                "$ref": "#/components/schemas/CategoryDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Category"
+                "$ref": "#/components/schemas/CategoryDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Category"
+                "$ref": "#/components/schemas/CategoryDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -125,7 +229,33 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -137,7 +267,33 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabelDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabelDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabelDto"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -149,24 +305,50 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Label"
+                "$ref": "#/components/schemas/LabelDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Label"
+                "$ref": "#/components/schemas/LabelDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Label"
+                "$ref": "#/components/schemas/LabelDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabelDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabelDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabelDto"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -189,7 +371,33 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabelDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabelDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabelDto"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -212,17 +420,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Label"
+                "$ref": "#/components/schemas/LabelDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Label"
+                "$ref": "#/components/schemas/LabelDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Label"
+                "$ref": "#/components/schemas/LabelDto"
               }
             }
           }
@@ -250,7 +458,33 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabelDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabelDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabelDto"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -262,7 +496,33 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDto"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -274,24 +534,50 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Task"
+                "$ref": "#/components/schemas/TaskDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Task"
+                "$ref": "#/components/schemas/TaskDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Task"
+                "$ref": "#/components/schemas/TaskDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDto"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -314,7 +600,33 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDto"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -337,24 +649,50 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Task"
+                "$ref": "#/components/schemas/TaskDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Task"
+                "$ref": "#/components/schemas/TaskDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Task"
+                "$ref": "#/components/schemas/TaskDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDto"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -365,6 +703,165 @@
         "parameters": [
           {
             "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/task-attachment": {
+      "get": {
+        "tags": [
+          "TaskAttachment"
+        ],
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/task-attachment/upload": {
+      "post": {
+        "tags": [
+          "TaskAttachment"
+        ],
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "file": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/task-attachment/upload-multiple/{taskId}": {
+      "post": {
+        "tags": [
+          "TaskAttachment"
+        ],
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "files": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/task-attachment/{attachmentId}": {
+      "delete": {
+        "tags": [
+          "TaskAttachment"
+        ],
+        "parameters": [
+          {
+            "name": "attachmentId",
             "in": "path",
             "required": true,
             "schema": {
@@ -399,17 +896,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskComment"
+                "$ref": "#/components/schemas/TaskCommentDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskComment"
+                "$ref": "#/components/schemas/TaskCommentDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskComment"
+                "$ref": "#/components/schemas/TaskCommentDto"
               }
             }
           }
@@ -451,7 +948,33 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskLabel"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskLabel"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskLabel"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -465,24 +988,50 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskLabel"
+                "$ref": "#/components/schemas/TaskLabelDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskLabel"
+                "$ref": "#/components/schemas/TaskLabelDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskLabel"
+                "$ref": "#/components/schemas/TaskLabelDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskLabel"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskLabel"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskLabel"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -514,7 +1063,33 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskLabel"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskLabel"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskLabel"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -691,7 +1266,7 @@
   },
   "components": {
     "schemas": {
-      "Category": {
+      "CategoryDto": {
         "type": "object",
         "properties": {
           "id": {
@@ -709,7 +1284,7 @@
         },
         "additionalProperties": false
       },
-      "Label": {
+      "LabelDto": {
         "type": "object",
         "properties": {
           "id": {
@@ -723,42 +1298,7 @@
         },
         "additionalProperties": false
       },
-      "Task": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "isCompleted": {
-            "type": "boolean"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "categoryId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "additionalProperties": false
-      },
-      "TaskComment": {
+      "TaskCommentDto": {
         "type": "object",
         "properties": {
           "id": {
@@ -784,7 +1324,54 @@
         },
         "additionalProperties": false
       },
+      "TaskDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "isCompleted": {
+            "type": "boolean"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
       "TaskLabel": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "labelId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaskLabelDto": {
         "type": "object",
         "properties": {
           "taskId": {
@@ -801,10 +1388,6 @@
       "UserDto": {
         "type": "object",
         "properties": {
-          "username": {
-            "type": "string",
-            "nullable": true
-          },
           "email": {
             "type": "string",
             "nullable": true

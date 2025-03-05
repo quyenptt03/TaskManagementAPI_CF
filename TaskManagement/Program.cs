@@ -12,6 +12,7 @@ using TaskManagement.Repositories;
 using TaskManagement.Services;
 using AutoMapper;
 using TaskManagement.Mappers;
+using Microsoft.Extensions.Azure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +59,8 @@ builder.Services.AddScoped<IGenericRepository<TaskManagement.Models.Task>, TaskR
 builder.Services.AddScoped<IGenericRepository<TaskComment>, TaskCommentRepository>();
 builder.Services.AddScoped<IGenericRepository<Label>, LabelRepository>();
 builder.Services.AddScoped<IGenericRepository<TaskLabel>, TaskLabelRepository>();
+builder.Services.AddScoped<ITaskAttachmentRepository, TaskAttachmentRepository>();
+builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
 
 builder.Services.AddAuthentication(cfg =>
 {
@@ -95,6 +98,12 @@ builder.Services.AddAuthentication(cfg =>
 });
 
 builder.Services.AddAuthorization();
+builder.Services.AddAzureClients(clientBuilder =>
+{
+    clientBuilder.AddBlobServiceClient(builder.Configuration["StorageConnectionString:blobServiceUri"]!).WithName("StorageConnectionString");
+    clientBuilder.AddQueueServiceClient(builder.Configuration["StorageConnectionString:queueServiceUri"]!).WithName("StorageConnectionString");
+    clientBuilder.AddTableServiceClient(builder.Configuration["StorageConnectionString:tableServiceUri"]!).WithName("StorageConnectionString");
+});
 
 var app = builder.Build();
 

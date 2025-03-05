@@ -7,12 +7,8 @@ namespace TaskManagement.Models
     {
         [Key]
         public int Id { get; set; }
-
-        public string Name { get; set; } = null!;
-
+        public string Name { get; set; }
         public string? Description { get; set; }
-
-        [JsonIgnore]
-        public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
+        public ICollection<Task>? Tasks { get; set; }
     }
 }

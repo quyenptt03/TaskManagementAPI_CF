@@ -55,7 +55,7 @@ namespace TaskManagement.Controllers
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, "User");
+                await _userManager.AddToRoleAsync(user, role);
 
                 return Ok(new { data = new { UserName = user.UserName, Email = user.Email, Role = role },
                     message = "User registered successfully" });

@@ -15,10 +15,8 @@ namespace TaskManagement.Models
 
         //public string PasswordHash { get; set; } = null!;
 
-        [JsonIgnore]
         public virtual ICollection<TaskComment> TaskComments { get; set; } = new List<TaskComment>();
 
-        [JsonIgnore]
         public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
     }
 }
