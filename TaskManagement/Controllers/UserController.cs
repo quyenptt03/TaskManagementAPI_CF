@@ -72,58 +72,61 @@ namespace TaskManagement.Controllers
                 return BadRequest("Email and password are required.");
             }
 
-            var user = _repository.GetAll().FirstOrDefault(u => u.Email == loginUser.Email);
-            if (user == null)
-            {
-                return Unauthorized("Invalid email or password");
-            }
+            //var user = _repository.GetAll().FirstOrDefaultAsync(u => u.Email == loginUser.Email);
+            //if (user == null)
+            //{
+            //    return Unauthorized("Invalid email or password");
+            //}
+            var result = await _signInManager.PasswordSignInAsync(loginUser.Email,
+                           loginUser.Password, true, lockoutOnFailure: true);
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, loginUser.Password, false);
+            //var result = await _signInManager.CheckPasswordSignInAsync(user, loginUser.Password, false);
             if (!result.Succeeded)
                 return Unauthorized();
 
-            var roles = await _userManager.GetRolesAsync(user);
+            //var roles = await _userManager.GetRolesAsync(user);
 
-            var token = _authHelper.CreateToken(user, roles);
-            Response.Cookies.Append("token", token, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddDays(1)
-                //Expires = DateTime.UtcNow.AddMinutes(1)
-            });
+            //var token = _authHelper.CreateToken(user, roles);
+            //Response.Cookies.Append("token", token, new CookieOptions
+            //{
+            //    HttpOnly = true,
+            //    Secure = true,
+            //    SameSite = SameSiteMode.Strict,
+            //    Expires = DateTime.UtcNow.AddDays(1)
+            //});
 
             return Ok("Login successfully");
         }
 
         [Authorize]
         [HttpPost("logout")]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
+            await _signInManager.SignOutAsync();
             Response.Cookies.Delete("token");
             return Ok(new { message = "Logged out successfully" });
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpGet]
-        public ActionResult GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            var result = (List<User>)_repository.GetAll();
+            var result = await _repository.GetAll();
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public ActionResult GetUserById([FromRoute] int id)
+        public async Task<ActionResult> GetUserById([FromRoute] int id)
         {
-            User user = _repository.GetById(id);
+            User user = await _repository.GetById(id);
             return user == null ? NotFound("User not found") : Ok(user);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        public ActionResult DeleteUser([FromRoute] int id)
+        public async Task<ActionResult> DeleteUser([FromRoute] int id)
         {
-            var user = _repository.GetById(id);
+            var user = await _repository.GetById(id);
             if (user == null)
             {
                 return NotFound("User not found!!!!!");
@@ -131,7 +134,7 @@ namespace TaskManagement.Controllers
 
             try
             {
-                _repository.Delete(id);
+                await _repository.Delete(id);
                 return Ok("User Deleted Successfully");
             }
             catch (Exception e)

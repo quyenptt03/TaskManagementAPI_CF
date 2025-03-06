@@ -21,24 +21,29 @@ namespace TaskManagement.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<CategoryDto>> GetCategories()
+        public async Task<ActionResult> GetCategories()
         {
-            List<Category> result = (List<Category>)_repository.GetAll();
+            var result = await _repository.GetAll();
 
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<CategoryDto>> Get([FromRoute] int id)
+        public async Task<ActionResult<IEnumerable<CategoryDto>>> Get([FromRoute] int id)
         {
-            Category cat = _repository.GetById(id);
+            Category cat = await _repository.GetById(id);
             return cat == null ? NotFound("Category not found") : Ok(cat);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public ActionResult<IEnumerable<CategoryDto>> AddCategory([FromBody] CategoryDto categoryDto)
+        public async Task<ActionResult<IEnumerable<CategoryDto>>> AddCategory([FromBody] CategoryDto categoryDto)
         {
+            if (categoryDto == null)
+            {
+                return BadRequest("Data cannot be null");
+            }
+
             var category = _mapper.Map<Category>(categoryDto);
 
             if (category == null)
@@ -57,7 +62,7 @@ namespace TaskManagement.Controllers
                     {
                         return Conflict(new { message = "Name already exists." });
                     }
-                    _repository.Add(category);
+                    await _repository.Add(category);
                     return Ok(category);
                 }
                 catch (Exception e)
@@ -69,12 +74,17 @@ namespace TaskManagement.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public ActionResult<IEnumerable<CategoryDto>> UpdateCategory(int id, [FromBody] CategoryDto categoryDto)
+        public async Task<ActionResult<IEnumerable<CategoryDto>>> UpdateCategory(int id, [FromBody] CategoryDto categoryDto)
         {
-            var cat = _repository.GetById(id);
+            var cat = await _repository.GetById(id);
             if (cat == null)
             {
                 return NotFound("Category Not Found!!!!!!");
+            }
+
+            if (categoryDto == null)
+            {
+                return BadRequest("Data can not be null");
             }
 
             var category = _mapper.Map<Category>(categoryDto);
@@ -87,7 +97,7 @@ namespace TaskManagement.Controllers
                 }
                 cat.Name = category.Name;
                 cat.Description = category.Description;
-                _repository.Update(cat);
+                await _repository.Update(cat);
                 return Ok(cat);
             }
             catch (Exception e)
@@ -98,9 +108,9 @@ namespace TaskManagement.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        public ActionResult<IEnumerable<CategoryDto>> DeleteCategory([FromRoute] int id)
+        public async Task<ActionResult<IEnumerable<CategoryDto>>> DeleteCategory([FromRoute] int id)
         {
-            var category = _repository.GetById(id);
+            var category = await _repository.GetById(id);
             if (category == null)
             {
                 return NotFound("Category not found!!!!!");
@@ -108,7 +118,7 @@ namespace TaskManagement.Controllers
 
             try
             {
-                _repository.Delete(id);
+                await _repository.Delete(id);
                 return Ok("Category Deleted Successfully");
             }
             catch (Exception e)

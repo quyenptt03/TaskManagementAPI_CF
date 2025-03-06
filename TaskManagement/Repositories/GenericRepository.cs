@@ -1,64 +1,69 @@
-﻿using TaskManagement.DataAccess;
+﻿using Microsoft.EntityFrameworkCore;
+using TaskManagement.DataAccess;
 using TaskManagement.Interfaces;
+using Task = System.Threading.Tasks.Task;
+
 
 namespace TaskManagement.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly TaskManagementContext _context;
+        protected readonly DbSet<T> _dbSet;
 
         public GenericRepository(TaskManagementContext context)
         {
             _context = context;
+            _dbSet = _context.Set<T>();
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
-            return _context.Set<T>().ToList();
+            return await _dbSet.ToListAsync();
         }
 
-        public T GetById(int id)
+        public async Task<T> GetById(int id)
         {
-            return _context.Set<T>().Find(id);
+            return await _dbSet.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
         }
 
-        public void Add(T entity)
-        {
-            if (entity != null)
-            {
-                _context.Set<T>().Add(entity);
-                _context.SaveChanges();
-            }
-        }
-
-        public void Update(T entity)
+        public async Task Add(T entity)
         {
             if (entity != null)
             {
-                _context.Set<T>().Update(entity);
-                _context.SaveChanges();
+                await _dbSet.AddAsync(entity);
+                await _context.SaveChangesAsync();
             }
         }
-        public void Delete(int id)
+
+        public async Task Update(T entity)
         {
-            T entity = GetById(id);
+            if (entity != null)
+            {
+                _dbSet.Update(entity);
+                await _context.SaveChangesAsync();
+            }
+        }
+        public async Task Delete(int id)
+        {
+            T entity = await GetById(id);
 
             if (entity != null)
             {
-                _context.Set<T>().Remove(entity);
-                _context.SaveChanges();
+                _dbSet.Remove(entity);
+                await _context.SaveChangesAsync();
             }
         }
 
-        public void Delete(T entity)
+        public async Task Delete(T entity)
         {
-            _context.Set<T>().Remove(entity);
-            _context.SaveChanges();
+             _dbSet.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public bool Any(Func<T, bool> value)
+        public bool Any(Func<T, bool> predicate)
         {
-            return _context.Set<T>().Any(value);
+            return _dbSet.Any(predicate);
         }
     }
 }

@@ -11,7 +11,6 @@ using Task = TaskManagement.Models.Task;
 
 namespace TaskManagement.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/tasks")]
     public class TaskController : Controller
@@ -28,23 +27,27 @@ namespace TaskManagement.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<TaskDto>> GetTasks()
+        public async Task<ActionResult<IEnumerable<TaskDto>>> GetTasks()
         {
-            var result = _repository.GetAll();
+            var result = await _repository.GetAll();
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<TaskDto>> GetTaskById([FromRoute] int id)
+        public async Task<ActionResult<IEnumerable<TaskDto>>> GetTaskById([FromRoute] int id)
         {
-            var task = _repository.GetById(id);
+            var task = await _repository.GetById(id);
             return task == null ? NotFound("Task not found") : Ok(task);
         }
 
         [Authorize]
         [HttpPost]
-        public ActionResult<IEnumerable<TaskDto>> AddTask([FromBody] TaskDto taskDto)
+        public async Task<ActionResult<IEnumerable<TaskDto>>> AddTask([FromBody] TaskDto taskDto)
         {
+            if (taskDto == null)
+            {
+                return BadRequest("Data cannot be null");
+            }
             var task = _mapper.Map<Task>(taskDto);
 
             if (task == null)
@@ -56,17 +59,17 @@ namespace TaskManagement.Controllers
                 return BadRequest("Task must have a title.");
             }
 
-            var cat = _catRepository.GetById(task.CategoryId);
+            var cat = await _catRepository.GetById(task.CategoryId);
             if (cat == null)
             {
-                return NotFound("Category not found!");
+                return BadRequest("Category not found!");
             }
 
             try
             {
                 var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 task.UserId = userId;
-                _repository.Add(task);
+                await _repository.Add(task);
                 return Ok(task);
             }
             catch (Exception e)
@@ -78,18 +81,23 @@ namespace TaskManagement.Controllers
 
         [Authorize]
         [HttpPut("{id}")]
-        public ActionResult<IEnumerable<TaskDto>> UpdateTask(int id, [FromBody] TaskDto taskDto)
+        public async Task<ActionResult<IEnumerable<TaskDto>>> UpdateTask(int id, [FromBody] TaskDto taskDto)
         {
-            var taskExist = _repository.GetById(id);
+            if (taskDto == null)
+            {
+                return BadRequest("Data cannot be null");
+            }
+
+            var taskExist = await _repository.GetById(id);
             if (taskExist == null)
             {
                 return NotFound("Task Not Found!!!!!!");
             }
 
-            var cat = _catRepository.GetById(taskDto.CategoryId);
+            var cat = await _catRepository.GetById(taskDto.CategoryId);
             if (cat == null)
             {
-                return NotFound("Category not found!");
+                return BadRequest("Category not found!");
             }
 
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
@@ -107,7 +115,7 @@ namespace TaskManagement.Controllers
                 taskExist.CategoryId = taskDto.CategoryId;
                 taskExist.IsCompleted = taskDto.IsCompleted;
                 taskExist.UserId = userId;
-                _repository.Update(taskExist);
+                await _repository.Update(taskExist);
                 return Ok(taskExist);
             }
             catch (Exception e)
@@ -118,9 +126,9 @@ namespace TaskManagement.Controllers
 
         [Authorize]
         [HttpDelete("{id}")]
-        public ActionResult<IEnumerable<TaskDto>> DeleteTask([FromRoute] int id)
+        public async Task<ActionResult<IEnumerable<TaskDto>>> DeleteTask([FromRoute] int id)
         {
-            var task = _repository.GetById(id);
+            var task = await _repository.GetById(id);
             if (task == null)
             {
                 return NotFound("Task not found!!!!!");
@@ -134,7 +142,7 @@ namespace TaskManagement.Controllers
 
             try
             {
-                _repository.Delete(id);
+                await _repository.Delete(id);
                 return Ok("Task Deleted Successfully");
             }
             catch (Exception e)

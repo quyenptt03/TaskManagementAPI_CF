@@ -20,11 +20,11 @@ namespace TaskManagement.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<LabelDto>> GetLabels()
+        public async Task<ActionResult<IEnumerable<LabelDto>>> GetLabels()
         {
             try
             {
-                var result = _labelRepository.GetAll();
+                var result = await _labelRepository.GetAll();
                 return Ok(result);
             }
             catch (Exception e)
@@ -34,11 +34,11 @@ namespace TaskManagement.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<LabelDto>> GetLabelById([FromRoute] int id)
+        public async Task<ActionResult<IEnumerable<LabelDto>>> GetLabelById([FromRoute] int id)
         {
             try
             {
-                var label = _labelRepository.GetById(id);
+                var label = await _labelRepository.GetById(id);
                 return label == null ? NotFound("Label not found") : Ok(label);
             }
             catch (Exception e)
@@ -48,39 +48,42 @@ namespace TaskManagement.Controllers
         }
 
         [HttpPost]
-        public ActionResult<IEnumerable<LabelDto>> AddLabel([FromBody] LabelDto labelDto)
+        public async Task<ActionResult<IEnumerable<LabelDto>>> AddLabel([FromBody] LabelDto labelDto)
         {
+            if (labelDto == null)
+            {
+                return BadRequest("Data cannot be null");
+            }
             var label = _mapper.Map<Label>(labelDto);
 
-            if (label == null)
+            try
             {
-                return BadRequest("Label cannot be null");
+                if (_labelRepository.Any(l => l.Name == label.Name))
+                {
+                    return Conflict(new { message = "Label's name already exists." });
+                }
+                await _labelRepository.Add(label);
+                return Ok(label);
             }
-            else
+            catch (Exception e)
             {
-                try
-                {
-                    if (_labelRepository.Any(l => l.Name == label.Name))
-                    {
-                        return Conflict(new { message = "Label's name already exists." });
-                    }
-                    _labelRepository.Add(label);
-                    return Ok(label);
-                }
-                catch (Exception e)
-                {
-                    return BadRequest(e);
-                }
+                return BadRequest(e);
             }
+           
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateLabel([FromRoute] int id, [FromBody] LabelDto labelDto)
+        public async Task<ActionResult> UpdateLabel([FromRoute] int id, [FromBody] LabelDto labelDto)
         {
-            var labelExists = _labelRepository.GetById(id);
+            var labelExists = await _labelRepository.GetById(id);
             if (labelExists == null)
             {
                 return NotFound("Label Not Found!!!!!!");
+            }
+
+            if (labelDto == null)
+            {
+                return BadRequest("Data can not be null");
             }
 
             var label = _mapper.Map<Label>(labelDto);
@@ -92,7 +95,7 @@ namespace TaskManagement.Controllers
                     return Conflict(new { message = "Label's name already exists." });
                 }
                 labelExists.Name = label.Name;
-                _labelRepository.Update(labelExists);
+                await _labelRepository.Update(labelExists);
                 return Ok(labelExists);
             }
             catch (Exception e)
@@ -102,9 +105,9 @@ namespace TaskManagement.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<IEnumerable<LabelDto>> DeleteLabel([FromRoute] int id)
+        public async Task<ActionResult<IEnumerable<LabelDto>>> DeleteLabel([FromRoute] int id)
         {
-            var label = _labelRepository.GetById(id);
+            var label = await _labelRepository.GetById(id);
             if (label == null)
             {
                 return NotFound("Label not found!!!!!");
@@ -112,7 +115,7 @@ namespace TaskManagement.Controllers
 
             try
             {
-                _labelRepository.Delete(id);
+                await _labelRepository.Delete(id);
                 return Ok("Label Deleted Successfully");
             }
             catch (Exception e)

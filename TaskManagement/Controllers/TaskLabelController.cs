@@ -30,28 +30,28 @@ namespace TaskManagement.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<TaskLabel>> GetAll()
+        public async Task<ActionResult<IEnumerable<TaskLabel>>> GetAll()
         {
-            return Ok(_taskLabelRepository.GetAll());
+            return Ok(await _taskLabelRepository.GetAll());
         }
 
         [Authorize]
         [HttpPost("assign")]
-        public ActionResult<IEnumerable<TaskLabel>> AssignTaskLabel([FromBody] TaskLabelDto taskLabelDto)
+        public async Task<ActionResult<IEnumerable<TaskLabel>>> AssignTaskLabel([FromBody] TaskLabelDto taskLabelDto)
         {
+            if (taskLabelDto == null)
+            {
+                return BadRequest("Data cannot be null");
+            }
             var taskLabel = _mapper.Map<TaskLabel>(taskLabelDto);
 
-            if (taskLabel == null)
-            {
-                return BadRequest("Task label is required");
-            }
-            var task = _taskRepository.GetById(taskLabel.TaskId);
+            var task = await _taskRepository.GetById(taskLabel.TaskId);
             if (task == null)
             {
                 return NotFound("Task not found!");
             }
 
-            var label = _labelRepository.GetById(taskLabel.LabelId);
+            var label = await _labelRepository.GetById(taskLabel.LabelId);
             if (label == null)
             {
                 return NotFound("Label not found!");
@@ -72,7 +72,7 @@ namespace TaskManagement.Controllers
 
             try
             {
-                _taskLabelRepository.Add(taskLabel);
+                await _taskLabelRepository.Add(taskLabel);
                 return Ok("Label assigned to task successfully!");
             }
             catch (Exception e)
@@ -83,17 +83,17 @@ namespace TaskManagement.Controllers
 
         [Authorize]
         [HttpDelete("remove/{taskId}/{labelId}")]
-        public ActionResult<IEnumerable<TaskLabel>> RemoveLabel(int taskId, int labelId)
+        public async Task<ActionResult> RemoveLabel(int taskId, int labelId)
         {
-            var taskLabel = _taskLabelRepository
-                .GetAll()
-                .FirstOrDefault(tl => tl.TaskId == taskId && tl.LabelId == labelId);
+            var taskLabels = await _taskLabelRepository.GetAll();
+            var taskLabel = taskLabels.FirstOrDefault(tl => tl.TaskId == taskId && tl.LabelId == labelId);
+
             if (taskLabel == null)
             {
                 return NotFound("Task label not found.");
             }
 
-            var task = _taskRepository.GetById(taskId);
+            var task = await _taskRepository.GetById(taskId);
 
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             if (userId != task.UserId)
@@ -103,7 +103,7 @@ namespace TaskManagement.Controllers
 
             try
             {
-                _taskLabelRepository.Delete(taskLabel);
+                await _taskLabelRepository.Delete(taskLabel);
                 return Ok("Label removed successfully!");
             }
             catch (Exception e)

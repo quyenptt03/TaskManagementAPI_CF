@@ -38,7 +38,7 @@ namespace TaskManagement.Controllers
                 return BadRequest("File is empty.");
             }
 
-            var task = _taskRepository.GetById(taskId);
+            var task = await _taskRepository.GetById(taskId);
             if (task == null)
             {
                 return BadRequest("Task not found");
@@ -73,7 +73,7 @@ namespace TaskManagement.Controllers
                 return BadRequest("No files uploaded.");
             }
 
-            var task = _taskRepository.GetById(taskId);
+            var task = await _taskRepository.GetById(taskId);
             if (task == null)
             {
                 return BadRequest("Task not found");

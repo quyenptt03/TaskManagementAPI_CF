@@ -25,24 +25,25 @@ namespace TaskManagement.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetTaskComments()
+        public async Task<ActionResult> GetTaskComments()
         {
-            var result = (List<TaskComment>)_repository.GetAll();
+            var result = await _repository.GetAll();
             return Ok(result);
         }
 
 
         [Authorize]
         [HttpPost]
-        public ActionResult AddCommentToTask([FromBody] TaskCommentDto commentDto)
+        public async Task<ActionResult> AddCommentToTask([FromBody] TaskCommentDto commentDto)
         {
-            var comment = _mapper.Map<TaskComment>(commentDto);
-
-            if (comment == null)
+            if (commentDto == null)
             {
                 return BadRequest("Task comment cannot be null");
             }
-            var task = _taskRepository.GetById(comment.TaskId);
+
+            var comment = _mapper.Map<TaskComment>(commentDto);
+
+            var task = await _taskRepository.GetById(comment.TaskId);
             if (task == null)
             {
                 return BadRequest("Task not found");
@@ -59,7 +60,7 @@ namespace TaskManagement.Controllers
             {
                 try
                 {
-                    _repository.Add(comment);
+                    await _repository.Add(comment);
                     return Ok(comment);
                 }
                 catch (Exception e)
@@ -71,9 +72,9 @@ namespace TaskManagement.Controllers
 
         [Authorize]
         [HttpDelete("{id}")]
-        public ActionResult DeleteComment([FromRoute] int id)
+        public async Task<ActionResult> DeleteComment([FromRoute] int id)
         {
-            var comment = _repository.GetById(id);
+            var comment = await _repository.GetById(id);
             if (comment == null)
             {
                 return NotFound("Comment not found!!!!!");
@@ -87,7 +88,7 @@ namespace TaskManagement.Controllers
 
             try
             {
-                _repository.Delete(id);
+                await _repository.Delete(id);
                 return Ok("Comment Deleted Successfully");
             }
             catch (Exception e)

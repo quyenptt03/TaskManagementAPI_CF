@@ -49,16 +49,11 @@ builder.Services.Configure<IdentityOptions>(options =>
     // User settings.
     options.User.AllowedUserNameCharacters =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-    options.User.RequireUniqueEmail = false;
+    options.User.RequireUniqueEmail = true;
 });
 
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<IGenericRepository<User>, UserRepository>();
-builder.Services.AddScoped<IGenericRepository<Category>, CategoryRepository>();
-builder.Services.AddScoped<IGenericRepository<TaskManagement.Models.Task>, TaskRepository>();
-builder.Services.AddScoped<IGenericRepository<TaskComment>, TaskCommentRepository>();
-builder.Services.AddScoped<IGenericRepository<Label>, LabelRepository>();
-builder.Services.AddScoped<IGenericRepository<TaskLabel>, TaskLabelRepository>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<ITaskAttachmentRepository, TaskAttachmentRepository>();
 builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
 
