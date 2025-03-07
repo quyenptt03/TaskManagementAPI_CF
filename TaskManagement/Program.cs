@@ -16,6 +16,17 @@ using Microsoft.Extensions.Azure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin()   
+                  .AllowAnyMethod()   
+                  .AllowAnyHeader();
+        });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
@@ -38,7 +49,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireLowercase = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
-    options.Password.RequiredLength = 6;
+    options.Password.RequiredLength = 8;
     //options.Password.RequiredUniqueChars = 0;
 
     // Lockout settings.
@@ -101,6 +112,8 @@ builder.Services.AddAzureClients(clientBuilder =>
 });
 
 var app = builder.Build();
+
+app.UseCors("AllowAll");
 
 app.UseRequestLoggingMiddleware();
 
