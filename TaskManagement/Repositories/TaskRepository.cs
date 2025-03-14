@@ -1,4 +1,5 @@
-﻿using TaskManagement.DataAccess;
+﻿using Microsoft.EntityFrameworkCore;
+using TaskManagement.DataAccess;
 using TaskManagement.Models;
 
 namespace TaskManagement.Repositories

@@ -38,7 +38,7 @@ namespace TaskManagement.Controllers
         {
             if (commentDto == null)
             {
-                return BadRequest("Task comment cannot be null");
+                return BadRequest(new { message = "Task comment cannot be null" });
             }
 
             var comment = _mapper.Map<TaskComment>(commentDto);
@@ -46,7 +46,7 @@ namespace TaskManagement.Controllers
             var task = await _taskRepository.GetById(comment.TaskId);
             if (task == null)
             {
-                return BadRequest("Task not found");
+                return BadRequest(new { message = "Task not found" });
             }
 
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
@@ -65,7 +65,7 @@ namespace TaskManagement.Controllers
                 }
                 catch (Exception e)
                 {
-                    return BadRequest(e);
+                    return BadRequest(new { message = e.Message });
                 }
             }
         }
@@ -77,7 +77,7 @@ namespace TaskManagement.Controllers
             var comment = await _repository.GetById(id);
             if (comment == null)
             {
-                return NotFound("Comment not found!!!!!");
+                return NotFound(new { message = "Comment not found!!!!!" });
             }
 
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
@@ -89,11 +89,11 @@ namespace TaskManagement.Controllers
             try
             {
                 await _repository.Delete(id);
-                return Ok("Comment Deleted Successfully");
+                return Ok(new { message = "Comment Deleted Successfully" });
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(new { message = e.Message });
             }
 
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using TaskManagement.DataAccess;
 using TaskManagement.Interfaces;
 using Task = System.Threading.Tasks.Task;
@@ -64,6 +65,11 @@ namespace TaskManagement.Repositories
         public bool Any(Func<T, bool> predicate)
         {
             return _dbSet.Any(predicate);
+        }
+
+        public async Task<IEnumerable<T>> FindByCondition(Expression<Func<T, bool>> expression)
+        {
+            return await _dbSet.Where(expression).ToListAsync();
         }
     }
 }
