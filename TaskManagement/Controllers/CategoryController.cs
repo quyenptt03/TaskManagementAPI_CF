@@ -32,7 +32,7 @@ namespace TaskManagement.Controllers
         public async Task<ActionResult<IEnumerable<CategoryDto>>> Get([FromRoute] int id)
         {
             Category cat = await _repository.GetById(id);
-            return cat == null ? NotFound("Category not found") : Ok(cat);
+            return cat == null ? NotFound(new { message = "Category not found" }) : Ok(cat);
         }
 
         [Authorize(Roles = "Admin")]
@@ -41,18 +41,18 @@ namespace TaskManagement.Controllers
         {
             if (categoryDto == null)
             {
-                return BadRequest("Data cannot be null");
+                return BadRequest(new { message = "Data cannot be null" });
             }
 
             var category = _mapper.Map<Category>(categoryDto);
 
             if (category == null)
             {
-                return BadRequest("Category is required");
+                return BadRequest(new { message = "Category is required" });
             }
             if (string.IsNullOrWhiteSpace(category.Name))
             {
-                return BadRequest("Category must have a name.");
+                return BadRequest(new { message = "Category must have a name." });
             }
             else
             {
@@ -67,7 +67,7 @@ namespace TaskManagement.Controllers
                 }
                 catch (Exception e)
                 {
-                    return BadRequest(e);
+                    return BadRequest(new { message = e.Message });
                 }
             }
         }
@@ -79,12 +79,12 @@ namespace TaskManagement.Controllers
             var cat = await _repository.GetById(id);
             if (cat == null)
             {
-                return NotFound("Category Not Found!!!!!!");
+                return NotFound(new { message = "Category Not Found!!!!!!" });
             }
 
             if (categoryDto == null)
             {
-                return BadRequest("Data can not be null");
+                return BadRequest(new { message = "Data can not be null" });
             }
 
             var category = _mapper.Map<Category>(categoryDto);
@@ -102,7 +102,7 @@ namespace TaskManagement.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(new { message = e.Message });
             }
         }
 
@@ -113,17 +113,17 @@ namespace TaskManagement.Controllers
             var category = await _repository.GetById(id);
             if (category == null)
             {
-                return NotFound("Category not found!!!!!");
+                return NotFound(new { message = "Category not found!!!!!" });
             }
 
             try
             {
                 await _repository.Delete(id);
-                return Ok("Category Deleted Successfully");
+                return Ok(new { message = "Category Deleted Successfully" });
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(new { message = e.Message });
             }
 
         }

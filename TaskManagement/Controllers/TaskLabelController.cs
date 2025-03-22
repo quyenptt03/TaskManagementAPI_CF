@@ -41,27 +41,27 @@ namespace TaskManagement.Controllers
         {
             if (taskLabelDto == null)
             {
-                return BadRequest("Data cannot be null");
+                return BadRequest(new { message = "Data cannot be null" });
             }
             var taskLabel = _mapper.Map<TaskLabel>(taskLabelDto);
 
             var task = await _taskRepository.GetById(taskLabel.TaskId);
             if (task == null)
             {
-                return NotFound("Task not found!");
+                return NotFound(new { message = "Task not found!" });
             }
 
             var label = await _labelRepository.GetById(taskLabel.LabelId);
             if (label == null)
             {
-                return NotFound("Label not found!");
+                return NotFound(new { message = "Label not found!" });
             }
 
             var existingTaskLabel = _taskLabelRepository.Any(tl => tl.TaskId == taskLabel.TaskId && tl.LabelId == taskLabel.LabelId);
 
             if (existingTaskLabel)
             {
-                return Conflict("Label is already assigned to this task.");
+                return Conflict(new { message = "Label is already assigned to this task." });
             }
 
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
@@ -73,7 +73,7 @@ namespace TaskManagement.Controllers
             try
             {
                 await _taskLabelRepository.Add(taskLabel);
-                return Ok("Label assigned to task successfully!");
+                return Ok(new { message = "Label assigned to task successfully!" });
             }
             catch (Exception e)
             {
@@ -90,7 +90,7 @@ namespace TaskManagement.Controllers
 
             if (taskLabel == null)
             {
-                return NotFound("Task label not found.");
+                return NotFound(new { message = "Task label not found." });
             }
 
             var task = await _taskRepository.GetById(taskId);
@@ -104,7 +104,7 @@ namespace TaskManagement.Controllers
             try
             {
                 await _taskLabelRepository.Delete(taskLabel);
-                return Ok("Label removed successfully!");
+                return Ok(new { message = "Label removed successfully!" });
             }
             catch (Exception e)
             {

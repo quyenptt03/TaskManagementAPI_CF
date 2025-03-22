@@ -1,4 +1,6 @@
-﻿namespace TaskManagement.Interfaces
+﻿using System.Linq.Expressions;
+
+namespace TaskManagement.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {
@@ -9,5 +11,7 @@
         Task Delete(int id);
         Task Delete(T entity);
         bool Any(Func<T, bool> value);
+
+        Task<IEnumerable<T>> FindByCondition(Expression<Func<T, bool>> predicate);
     }
 }

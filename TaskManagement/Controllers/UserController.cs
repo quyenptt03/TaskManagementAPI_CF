@@ -7,6 +7,7 @@ using TaskManagement.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Azure.Core;
 using AutoMapper;
+using System.Data;
 
 namespace TaskManagement.Controllers
 {
@@ -43,7 +44,7 @@ namespace TaskManagement.Controllers
 
             if (registerUser.Email == null || registerUser.Password == null)
             {
-                return BadRequest("Email and password are required.");
+                return BadRequest(new { message = "Email and password are required." });
             }
             var userData = _mapper.Map<User>(registerUser);
 
@@ -57,11 +58,13 @@ namespace TaskManagement.Controllers
             {
                 await _userManager.AddToRoleAsync(user, role);
 
-                return Ok(new { data = new { UserName = user.UserName, Email = user.Email, Role = role },
-                    message = "User registered successfully" });
+                return Ok(new 
+                    { data = new { UserName = user.UserName, Email = user.Email, Role = role },
+                        message = "User registered successfully" 
+                    });
             }
 
-            return BadRequest("Registration failed");
+            return BadRequest(new { message = "Registration failed" });
         }
 
         [HttpPost("login")]
@@ -69,33 +72,39 @@ namespace TaskManagement.Controllers
         {
             if (loginUser.Email == null || loginUser.Password == null)
             {
-                return BadRequest("Email and password are required.");
+                return BadRequest(new { message = "Email and password are required." });
             }
 
-            //var user = _repository.GetAll().FirstOrDefaultAsync(u => u.Email == loginUser.Email);
-            //if (user == null)
-            //{
-            //    return Unauthorized("Invalid email or password");
-            //}
-            var result = await _signInManager.PasswordSignInAsync(loginUser.Email,
-                           loginUser.Password, true, lockoutOnFailure: true);
+            var users = await _repository.GetAll();
+            var user = users.FirstOrDefault(u => u.Email == loginUser.Email);
+            if (user == null)
+            {
+                return Unauthorized(new { message = "Invalid email or password" });
+            }
+            //var result = await _signInManager.PasswordSignInAsync(loginUser.Email,
+            //               loginUser.Password, true, lockoutOnFailure: true);
 
-            //var result = await _signInManager.CheckPasswordSignInAsync(user, loginUser.Password, false);
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginUser.Password, false);
             if (!result.Succeeded)
-                return Unauthorized();
+                return Unauthorized(new { message = "Invalid email or password" });
 
-            //var roles = await _userManager.GetRolesAsync(user);
+            var role = await _userManager.GetRolesAsync(user);
 
-            //var token = _authHelper.CreateToken(user, roles);
-            //Response.Cookies.Append("token", token, new CookieOptions
-            //{
-            //    HttpOnly = true,
-            //    Secure = true,
-            //    SameSite = SameSiteMode.Strict,
-            //    Expires = DateTime.UtcNow.AddDays(1)
-            //});
+            var token = _authHelper.CreateToken(user, role);
+            Response.Cookies.Append("token", token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(1)
+            });
 
-            return Ok("Login successfully");
+            return Ok(new
+            { 
+                message = "Logged in successfully",
+                data = new { Id=user.Id, UserName = user.UserName, Email = user.Email, Role = role },
+                accessToken = token
+            });
         }
 
         [Authorize]
@@ -119,7 +128,7 @@ namespace TaskManagement.Controllers
         public async Task<ActionResult> GetUserById([FromRoute] int id)
         {
             User user = await _repository.GetById(id);
-            return user == null ? NotFound("User not found") : Ok(user);
+            return user == null ? NotFound(new { message = "User not found" }) : Ok(user);
         }
 
         [Authorize(Roles = "Admin")]
@@ -129,13 +138,13 @@ namespace TaskManagement.Controllers
             var user = await _repository.GetById(id);
             if (user == null)
             {
-                return NotFound("User not found!!!!!");
+                return NotFound(new { message = "User not found!!!!!" });
             }
 
             try
             {
                 await _repository.Delete(id);
-                return Ok("User Deleted Successfully");
+                return Ok(new {message = "User Deleted Successfully" });
             }
             catch (Exception e)
             {

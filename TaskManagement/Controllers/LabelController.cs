@@ -29,7 +29,7 @@ namespace TaskManagement.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(new { message = e.Message });
             }
         }
 
@@ -39,7 +39,7 @@ namespace TaskManagement.Controllers
             try
             {
                 var label = await _labelRepository.GetById(id);
-                return label == null ? NotFound("Label not found") : Ok(label);
+                return label == null ? NotFound(new { message = "Label not found" }) : Ok(label);
             }
             catch (Exception e)
             {
@@ -52,7 +52,7 @@ namespace TaskManagement.Controllers
         {
             if (labelDto == null)
             {
-                return BadRequest("Data cannot be null");
+                return BadRequest(new { message = "Data cannot be null" });
             }
             var label = _mapper.Map<Label>(labelDto);
 
@@ -67,7 +67,7 @@ namespace TaskManagement.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(new { message = e.Message });
             }
            
         }
@@ -78,12 +78,12 @@ namespace TaskManagement.Controllers
             var labelExists = await _labelRepository.GetById(id);
             if (labelExists == null)
             {
-                return NotFound("Label Not Found!!!!!!");
+                return NotFound(new { message = "Label Not Found!!!!!!" });
             }
 
             if (labelDto == null)
             {
-                return BadRequest("Data can not be null");
+                return BadRequest(new { message = "Data can not be null" });
             }
 
             var label = _mapper.Map<Label>(labelDto);
@@ -100,7 +100,7 @@ namespace TaskManagement.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(new { message = e.Message });
             }
         }
 
@@ -110,17 +110,17 @@ namespace TaskManagement.Controllers
             var label = await _labelRepository.GetById(id);
             if (label == null)
             {
-                return NotFound("Label not found!!!!!");
+                return NotFound(new { message = "Label not found!!!!!" });
             }
 
             try
             {
                 await _labelRepository.Delete(id);
-                return Ok("Label Deleted Successfully");
+                return Ok(new { message = "Label Deleted Successfully" });
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(new { message = e });
             }
 
         }

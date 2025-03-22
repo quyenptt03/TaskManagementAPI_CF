@@ -35,13 +35,13 @@ namespace TaskManagement.Controllers
         {
             if (file == null || file.Length == 0)
             {
-                return BadRequest("File is empty.");
+                return BadRequest(new { message = "File is empty." });
             }
 
             var task = await _taskRepository.GetById(taskId);
             if (task == null)
             {
-                return BadRequest("Task not found");
+                return BadRequest(new { message = "Task not found" });
             }
 
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
@@ -55,12 +55,12 @@ namespace TaskManagement.Controllers
                 var savedAttachment = await _attachmentRepository.AddAttachmentAsync(taskId, file);
                 if (savedAttachment == null)
                 {
-                    return BadRequest("Fail to upload attachment");
+                    return BadRequest(new { message = "Fail to upload attachment" });
                 }
                 return Ok(savedAttachment);
             } catch(Exception)
             {
-                return BadRequest("Fail to upload attachment");
+                return BadRequest(new { message = "Fail to upload attachment" });
             }
         }
 
@@ -70,13 +70,13 @@ namespace TaskManagement.Controllers
         {
             if (files == null || files.Count == 0)
             {
-                return BadRequest("No files uploaded.");
+                return BadRequest(new { message = "No files uploaded." });
             }
 
             var task = await _taskRepository.GetById(taskId);
             if (task == null)
             {
-                return BadRequest("Task not found");
+                return BadRequest(new { message = "Task not found" });
             }
 
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
@@ -93,7 +93,7 @@ namespace TaskManagement.Controllers
                 }
             } catch(Exception)
             {
-                return BadRequest("Fail to upload attachments");
+                return BadRequest(new { message = "Fail to upload attachments" });
             }
 
             return Ok(new { message = "Files uploaded successfully!"});
@@ -104,9 +104,9 @@ namespace TaskManagement.Controllers
         public async Task<IActionResult> DeleteAttachment(int attachmentId)
         {
             var attachment = await _attachmentRepository.DeleteAttachmentAsync(attachmentId);
-            if (!attachment) return NotFound("Attachment not found.");
+            if (!attachment) return NotFound(new { message = "Attachment not found." });
 
-            return Ok("Attachment deleted successfully.");
+            return Ok(new { message = "Attachment deleted successfully." });
         }
     }
 }
